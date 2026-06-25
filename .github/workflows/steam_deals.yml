@@ -25,6 +25,7 @@ jobs:
       - name: Run deal checker
         env:
           DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
+          MIN_DISCOUNT: 80
         run: python src/steam_bot.py
 
       - name: Commit updated state

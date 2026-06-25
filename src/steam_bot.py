@@ -6,7 +6,7 @@ from datetime import datetime
 import requests
 
 DISCORD_WEBHOOK = os.environ.get("DISCORD_WEBHOOK_URL")
-MIN_DISCOUNT = int(os.environ.get("MIN_DISCOUNT", 50))
+MIN_DISCOUNT = int(os.environ.get("MIN_DISCOUNT", 80))
 DATA_FILE = os.environ.get("DATA_FILE", "data/known_deals.json")
 STEAM_API = "https://store.steampowered.com/api/featuredcategories"
 
@@ -71,6 +71,14 @@ def build_embed(item: dict, category: str):
         title = f"🎁 FREE — {name}"
         color = 0x00FF00
         price_field = f"~~{fmt_price(orig, cc)}~~ → **Free! 🆓**"
+    elif disc >= 90:
+        title = f"🔥 {name}  (-{disc}%)"
+        color = 0xFF4500
+        price_field = f"~~{fmt_price(orig, cc)}~~ → **{fmt_price(final, cc)}**  (-{disc}%)"
+    elif disc >= 80:
+        title = f"⚡ {name}  (-{disc}%)"
+        color = 0xFF8C00
+        price_field = f"~~{fmt_price(orig, cc)}~~ → **{fmt_price(final, cc)}**  (-{disc}%)"
     else:
         title = f"{name}  (-{disc}%)"
         color = 0x66C0F4
@@ -174,6 +182,7 @@ def main():
     specials_items = data.get("specials", {}).get("items", [])
     header = check_major_sale(specials_items)
 
+    new_embeds.sort(key=lambda e: (0 if "FREE" in e["title"] else 1, -e["title"].count("%")))
     send_discord(new_embeds, header)
     print(f"Sent {len(new_embeds)} deal(s) to Discord ✓")
     save_data({"deals": updated_deals, "last_update": datetime.now().isoformat()})
