@@ -8,21 +8,11 @@ import requests
 DISCORD_WEBHOOK = os.environ.get("DISCORD_WEBHOOK_URL")
 MIN_DISCOUNT = int(os.environ.get("MIN_DISCOUNT", 80))
 DATA_FILE = os.environ.get("DATA_FILE", "data/known_deals.json")
-STEAM_API = "https://store.steampowered.com/api/featuredcategories"
-
-CURRENCY = {
-    1: "$", 2: "£", 3: "€", 5: "₽", 6: "R$",
-    7: "¥", 8: "₩", 9: "₹", 10: "RM", 11: "PHP",
-    12: "S$", 13: "฿", 14: "₴", 15: "₪",
-    16: "CLP", 17: "S/", 18: "R$", 19: "zł",
-    20: "NT$", 21: "kr", 22: "kr", 23: "CHF",
-    24: "₸", 25: "HRK", 26: "Kč", 27: "kr",
-    28: "kr", 29: "kr", 30: "₫", 31: "₺",
-    32: "₭", 33: "kr", 34: "лв",
-    35: "HK$", 36: "R", 37: "Rp", 38: "R",
-    39: "₨", 40: "ARS", 41: "COP", 42: "$",
-    43: "₱", 44: "د.إ", 45: "₦",
-}
+# cc=vn -> Steam trả giá VNĐ; l=english cho tên/category ổn định.
+COUNTRY = os.environ.get("STEAM_CC", "vn")
+STEAM_API = (
+    f"https://store.steampowered.com/api/featuredcategories?cc={COUNTRY}&l=english"
+)
 
 
 def load_data():
@@ -38,11 +28,11 @@ def save_data(data):
         json.dump(data, f, indent=2)
 
 
-def fmt_price(cents: int, cc: int) -> str:
-    if cents == 0:
+def fmt_price(cents) -> str:
+    # Giá Steam ở đơn vị ×100. cc=vn -> VNĐ. Format kiểu VN: 297.000₫
+    if not cents:
         return "Free"
-    sym = CURRENCY.get(cc, "$")
-    return f"{sym}{cents / 100:.2f}"
+    return f"{cents // 100:,}".replace(",", ".") + "₫"
 
 
 def fetch_featured() -> dict:
@@ -63,28 +53,25 @@ def build_embed(item: dict, category: str):
     disc = item.get("discount_percent") or 0
     orig = item.get("original_price") or 0
     final = item.get("final_price") or 0
-    cc = item.get("currency") or 1
 
     is_freebie = disc == 100 or (orig > 0 and final == 0)
 
     if is_freebie:
         title = f"🎁 FREE — {name}"
         color = 0x00FF00
-        price_field = f"~~{fmt_price(orig, cc)}~~ → **Free! 🆓**"
+        price_field = f"~~{fmt_price(orig)}~~ → **Free! 🆓**"
     elif disc >= 90:
         title = f"🔥 {name}  (-{disc}%)"
         color = 0xFF4500
-        price_field = f"~~{fmt_price(orig, cc)}~~ → **{fmt_price(final, cc)}**  (-{disc}%)"
+        price_field = f"~~{fmt_price(orig)}~~ → **{fmt_price(final)}**  (-{disc}%)"
     elif disc >= 80:
         title = f"⚡ {name}  (-{disc}%)"
         color = 0xFF8C00
-        price_field = f"~~{fmt_price(orig, cc)}~~ → **{fmt_price(final, cc)}**  (-{disc}%)"
+        price_field = f"~~{fmt_price(orig)}~~ → **{fmt_price(final)}**  (-{disc}%)"
     else:
         title = f"{name}  (-{disc}%)"
         color = 0x66C0F4
-        price_field = (
-            f"~~{fmt_price(orig, cc)}~~ → **{fmt_price(final, cc)}**  (-{disc}%)"
-        )
+        price_field = f"~~{fmt_price(orig)}~~ → **{fmt_price(final)}**  (-{disc}%)"
 
     img = f"https://cdn.cloudflare.steamstatic.com/steam/apps/{appid}/header.jpg"
 
@@ -145,9 +132,10 @@ def main():
             continue
 
         for item in items:
-            appid = str(item.get("id"))
-            if not appid:
-                continue
+            raw_id = item.get("id")
+            if not isinstance(raw_id, int) or raw_id <= 0:
+                continue  # bỏ item id rỗng/không hợp lệ -> tránh link /app/None về trang chủ
+            appid = str(raw_id)
 
             disc = item.get("discount_percent") or 0
             orig = item.get("original_price") or 0
@@ -182,7 +170,9 @@ def main():
     specials_items = data.get("specials", {}).get("items", [])
     header = check_major_sale(specials_items)
 
-    new_embeds.sort(key=lambda e: (0 if "FREE" in e["title"] else 1, -e["title"].count("%")))
+    new_embeds.sort(
+        key=lambda e: (0 if "FREE" in e["title"] else 1, -e["title"].count("%"))
+    )
     send_discord(new_embeds, header)
     print(f"Sent {len(new_embeds)} deal(s) to Discord ✓")
     save_data({"deals": updated_deals, "last_update": datetime.now().isoformat()})
