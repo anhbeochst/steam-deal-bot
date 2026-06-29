@@ -1,1 +1,47 @@
-{"deals": {}, "last_update": null}
+{
+  "deals": {
+    "320795": {
+      "name": "Batman: Arkham Collection",
+      "disc": 85,
+      "final": 899,
+      "seen": "2026-06-25T01:48:03.371359"
+    },
+    "124923": {
+      "name": "The Witcher 3: Wild Hunt - Complete Edition",
+      "disc": 80,
+      "final": 22900,
+      "seen": "2026-06-25T12:28:01.034848"
+    },
+    "3405690": {
+      "name": "EA SPORTS FC\u2122 26",
+      "disc": 80,
+      "final": 34000,
+      "seen": "2026-06-25T12:28:01.034900"
+    },
+    "322330": {
+      "name": "Don't Starve Together",
+      "disc": 90,
+      "final": 2200,
+      "seen": "2026-06-25T12:28:01.034873"
+    },
+    "2405": {
+      "name": "The Binding of Isaac: Rebirth Complete Bundle",
+      "disc": 90,
+      "final": 7700,
+      "seen": "2026-06-28T19:40:34.698580"
+    },
+    "250900": {
+      "name": "The Binding of Isaac: Rebirth",
+      "disc": 90,
+      "final": 480,
+      "seen": "2026-06-28T06:26:53.403261"
+    },
+    "783409": {
+      "name": "Call of Duty\u00ae: Modern Warfare\u00ae II",
+      "disc": 90,
+      "final": 23700,
+      "seen": "2026-06-28T19:40:34.698606"
+    }
+  },
+  "last_update": "2026-06-28T19:40:34.879638"
+}
