@@ -77,7 +77,19 @@
       "disc": 95,
       "final": 8250000,
       "seen": "2026-08-04T05:21:19.416266"
+    },
+    "1530370": {
+      "name": "Speedy Gun Savage",
+      "disc": 80,
+      "final": 2400000,
+      "seen": "2026-08-05T12:04:26.407802"
+    },
+    "4751020": {
+      "name": "Launching to Stop the Enemy's Final Fleet",
+      "disc": 90,
+      "final": 1650000,
+      "seen": "2026-08-05T12:04:26.407825"
     }
   },
-  "last_update": "2026-08-05T05:21:15.113736"
+  "last_update": "2026-08-05T12:04:26.535184"
 }
