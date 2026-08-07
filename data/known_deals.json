@@ -89,7 +89,19 @@
       "disc": 90,
       "final": 1650000,
       "seen": "2026-08-05T12:04:26.407825"
+    },
+    "460930": {
+      "name": "Tom Clancy's Ghost Recon\u00ae Wildlands",
+      "disc": 95,
+      "final": 3950000,
+      "seen": "2026-08-07T00:09:05.979958"
+    },
+    "2231380": {
+      "name": "Tom Clancy's Ghost Recon\u00ae Breakpoint",
+      "disc": 95,
+      "final": 4950000,
+      "seen": "2026-08-07T00:09:05.979997"
     }
   },
-  "last_update": "2026-08-06T12:06:58.912957"
+  "last_update": "2026-08-07T00:09:06.391416"
 }
