@@ -173,7 +173,19 @@
       "disc": 90,
       "final": 2500000,
       "seen": "2026-09-25T07:33:22.133418"
+    },
+    "1304930": {
+      "name": "The Outlast Trials",
+      "disc": 90,
+      "final": 4700000,
+      "seen": "2026-10-01T22:34:21.192685"
+    },
+    "489830": {
+      "name": "The Elder Scrolls V: Skyrim Special Edition",
+      "disc": 90,
+      "final": 5000000,
+      "seen": "2026-10-01T22:34:21.192722"
     }
   },
-  "last_update": "2026-10-01T16:57:59.489289"
+  "last_update": "2026-10-01T22:34:21.514166"
 }
