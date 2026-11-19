@@ -203,7 +203,19 @@
       "disc": 80,
       "final": 3750000,
       "seen": "2026-10-27T15:48:54.011868"
+    },
+    "2909400": {
+      "name": "FINAL FANTASY VII REBIRTH",
+      "disc": 85,
+      "final": 17850000,
+      "seen": "2026-11-19T10:07:02.134644"
+    },
+    "1462040": {
+      "name": "FINAL FANTASY VII REMAKE INTERGRADE",
+      "disc": 82,
+      "final": 17800000,
+      "seen": "2026-11-19T10:07:02.134646"
     }
   },
-  "last_update": "2026-11-18T18:47:00.486758"
+  "last_update": "2026-11-19T10:07:02.549224"
 }
